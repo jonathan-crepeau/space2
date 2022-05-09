@@ -33,14 +33,10 @@ class BorgSphere extends Starship {
 
 }
 
-// const user = new Intrepid('Voyager-J');
-// const testShip = new BorgSphere('The Jenny');
-// const testShip2 = new BorgSphere('The Betty');
-// console.log(user);
-// console.log(testShip);
-// console.log(testShip2);
-
 let humanPlayer;
+
+
+
 
 // SECTION - game Object:
 
@@ -52,32 +48,83 @@ game = {
       let alienShip = new BorgSphere('Ship ' + a);
       game.alienShips.push(alienShip);
     }
+    setTimeout(() => {return game.battle();}, 1000);
   },
   battle() {
-    // if (user.hull <= 0) { // run userAttack, alienAttack, etc. }
+    while (humanPlayer.hull > 0) {
+      // NOTE - return here means Voyager-J continues even when hull property is/falls below zero.
+      game.attackPrompt();
+    }
+    return game.endOfGame();
+  },
+  attackPrompt() {
+    let userResponse = prompt('Ready to attack? Enter (Yes / No / Report)').toLowerCase();
+    if (userResponse.match(/yes/)) {
+      console.log("[============ ATTACK ON BORG SPHERE ===============]");
+      console.log('Lieutenant, fire photon torpedos!');
+      console.log("[===========================]");
+      game.userAttack();
+    } else if (userResponse.match(/report/)) {
+      console.log(humanPlayer);
+      game.attackPrompt();
+    } else {
+      game.retreatOption();
+    }
   },
   userAttack() {
-      if ((prompt('Ready to attack? Enter (Yes / No)')).toLowerCase().match(/yes/)) {
-      return console.log('Yes!');
+    if (Math.random() < humanPlayer.accuracy) {
+      game.alienShips[0].hull -= humanPlayer.firepower;
+      console.log("[============ DIRECT HIT ON BORG SPHERE ===============]");
+      console.log("Direct hit on enemy target, Captain.");
+      console.log("[===========================]");
     } else {
-      return console.log(`call 'retreat()' method.`)
+      console.log("[============ MISSED ATTACK ===============]");
+      console.log("No hit with our torpedos, Captain.");
+      console.log("[===========================]");
     }
-    // prompt, "ready to attack?", for user reply of 'yes'
-    // attack alien ship at [0] index in alienShips
+    if (game.alienShips[0].hull <= 0) {
+      console.log("[===========================]");
+      console.log(`${game.alienShips[0].name} destroyed!`);
+      console.log("[===========================]");
+      game.spliceEnemy();
+      game.retreatOption();
+    } else {
+      game.alienAttack()
+    }
+  },
+  spliceEnemy() {
+    game.alienShips.splice(0, 1);
   },
   alienAttack() {
-    // alien at [0] index attacks user
+    if (Math.random() < game.alienShips[0].accuracy) {
+      humanPlayer.hull -= game.alienShips[0].firepower;
+      console.log(`[============ ${game.alienShips[0].name}'S ATTACK ON INTREPID ===============]`);
+      console.log("Direct hit to our starboard bow, Captain.");
+      console.log("[===========================]");
+    } else {
+      console.log("[===========================]");
+      console.log("Enemy's attack missed, Captain.");
+      console.log("[===========================]");
+    }
+    return game.attackPrompt();
   },
   retreatOption() {
-    // prompt
-    // ask user if they would like to retreat
+    let userResponse = prompt("Would you like to retreat?").toLowerCase();
+    if (userResponse.match(/yes/)) {
+      return console.log("END OF GAME (retreated)");
+    } else if (userResponse.match(/report/)) {
+      console.log(game.alienShips.length + ' Borg Sphere left.');
+      game.retreatOption();
+    } else {
+      game.attackPrompt();
+    }
   },
   endOfGame() {
+    console.log("[===========================]");
+    console.log(`${humanPlayer.name} Destroyed\nEND OF GAME`);
+    console.log("[===========================]");
     // most likely(?) to display game result in console
   }
 }
 
 game.start();
-console.log(humanPlayer);
-console.log(game.alienShips);
-game.userAttack();
