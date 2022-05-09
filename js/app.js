@@ -3,12 +3,12 @@
 // SECTION - Classes:
 
 class Starship {
+  hull;
+  firepower;
+  accuracy;
   constructor(name) {
   this.name = name;
   }
-  // hull
-  // firepower
-  // accuracy
 }
 
 class Intrepid extends Starship {
@@ -33,27 +33,35 @@ class BorgSphere extends Starship {
 
 }
 
-const user = new Intrepid('Voyager-J');
-const testShip = new BorgSphere('The Jenny');
-const testShip2 = new BorgSphere('The Betty');
-console.log(user);
-console.log(testShip);
-console.log(testShip2);
+// const user = new Intrepid('Voyager-J');
+// const testShip = new BorgSphere('The Jenny');
+// const testShip2 = new BorgSphere('The Betty');
+// console.log(user);
+// console.log(testShip);
+// console.log(testShip2);
 
-
+let humanPlayer;
 
 // SECTION - game Object:
 
 game = {
   alienShips: [],
   start() {
-    // create Intrepid USS Voyager-J
-    // create 6 alien vessels and populate 'alienShips' array with them.
+    humanPlayer = new Intrepid('Voyager-J');
+    for (let a = 0; a < 6; a++) {
+      let alienShip = new BorgSphere('Ship ' + a);
+      game.alienShips.push(alienShip);
+    }
   },
   battle() {
-    // if (user.hull <= 0) {}
+    // if (user.hull <= 0) { // run userAttack, alienAttack, etc. }
   },
   userAttack() {
+      if ((prompt('Ready to attack? Enter (Yes / No)')).toLowerCase().match(/yes/)) {
+      return console.log('Yes!');
+    } else {
+      return console.log(`call 'retreat()' method.`)
+    }
     // prompt, "ready to attack?", for user reply of 'yes'
     // attack alien ship at [0] index in alienShips
   },
@@ -68,3 +76,8 @@ game = {
     // most likely(?) to display game result in console
   }
 }
+
+game.start();
+console.log(humanPlayer);
+console.log(game.alienShips);
+game.userAttack();
