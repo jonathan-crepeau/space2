@@ -76,7 +76,8 @@ game = {
       game.alienShips[0].hull -= humanPlayer.firepower;
       console.log("[============ DIRECT HIT ON BORG SPHERE ===============]");
       console.log("Direct hit on enemy target, Captain.");
-      console.log("[===========================]");
+      console.log("[==================
+        =========]");
     } else {
       console.log("[============ MISSED ATTACK ===============]");
       console.log("No hit with our torpedos, Captain.");
@@ -111,7 +112,7 @@ game = {
   retreatOption() {
     let userResponse = prompt("Would you like to retreat?").toLowerCase();
     if (userResponse.match(/yes/)) {
-      return console.log("END OF GAME (retreated)");
+      console.log("END OF GAME (retreated)");
     } else if (userResponse.match(/report/)) {
       console.log(game.alienShips.length + ' Borg Sphere left.');
       game.retreatOption();
