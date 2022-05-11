@@ -29,12 +29,15 @@ class Intrepid extends Starship {
 }
 
 class BorgSphere extends Starship {
-  constructor(name) {
-    super(name);
-  }
   hull = Math.floor(Math.random() * (6 - 3 + 1) + 3);
   firepower = Math.floor(Math.random() * (4 - 2 + 1) + 2);
   accuracy = Math.random() * (0.8 - 0.6 + 1) + 0.6;
+  constructor(name) {
+    super(name);
+  }
+  greet() {
+    console.log('Resistance is futile.');
+  }
 }
 
 
@@ -42,14 +45,18 @@ class BorgSphere extends Starship {
 // SECTION - FUNCTIONS
 
 function playGame() {
-  humanPlayer = new Intrepid('Voyager-J');
-  for (let a = 0; a < 6; a++) {
-    game.spheres.push(new BorgSphere('Ship ' + (a + 1)));
-  }
+  createShips();
   while (humanPlayer.hull > 0 && game.spheres.length > 0) {
     game.attackPrompt();
   }
   game.endOfGame();
+}
+
+function createShips() {
+  humanPlayer = new Intrepid('Voyager-J');
+  for (let a = 0; a < 6; a++) {
+    game.spheres.push(new BorgSphere('Ship ' + (a + 1)));
+  }
 }
 
 
